@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue-TodoList</title>
+    <!-- 引入vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入element-UI组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- 时间格式化插件 -->
+    <script src="js/moment.js"></script>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+    <div id="root">
+        <div>
+            <el-input @keyup.enter.native="haddleSubmit" placeholder="请输入待办事项" v-model="inputValue" clearable>
+            </el-input>
+            <el-button @click="haddleSubmit">提交</el-button>
+        </div>
+        <el-col :span="24">
+            <el-card shadow="never">
+                待办事项个数：{{todoLength}}
+            </el-card>
+        </el-col>
+        <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'timeI', order: 'descending'}">
+            <el-table-column prop="time" label="创建日期" sortable width="180" :formatter="formatter">
+            </el-table-column>
+            <el-table-column prop="content" label="事项内容" width="400">
+            </el-table-column>
+            <el-table-column prop="status" label="状态" width="130" sortable>
+                <template slot-scope="scope">
+                            <i v-if="scope.row.status" @click="handleChange(scope.$index,scope.row)" title="已完成" style="color:green" class="el-icon-success">
+                             </i>
+                             <i v-if="!scope.row.status" @click="handleChange(scope.$index,scope.row)" title="进行中" style="color:#ccc" class="el-icon-success">
+                                </i>
+                      </template>
+            </el-table-column>
+            <el-table-column prop="status" label="操作">
+                <template slot-scope="scope">
+                       
+                        <el-button
+                        size="mini"  
+                        @click="handleChange(scope.$index,scope.row)"
+                        >{{scope.row.status?"设为未做":"设为已做" }}</el-button>
+                       
+                      <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)"
+                       >删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</body>
+<script src="js/index.js"></script>
+
+</html>
